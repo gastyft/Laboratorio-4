@@ -1,0 +1,109 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TP 1 Forms</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/54b826676b.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <link rel="stylesheet" href="forms.css" type="text/css">
+        <script type="text/javascript" src="forms.js"></script>
+        <link rel="icon" type="image/png" href="UTN-favicon.png">
+    </head>
+<body>
+    <header style="display:flex; justify-content: center; padding-top:12px; font-size:30px; ">
+        
+        <a class="navbar-brand" href="http://www.mdp.utn.edu.ar" style="margin-left: -500px;" >
+      
+            <img src="UTN-iso-new.png" style="height: 60px; " alt="Logo"  class="d-inline-block align-text-top">
+          </a>
+        
+        <h1  style="padding-top:5px; padding-left: 330px;" >PRÁCTICA TP 1 FORMS </h1>
+        
+     </header>
+    <div class="container">
+        <br><br>
+        <form > 
+      
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" name="nombre"  id="nombre" placeholder="Nombre" >
+        <label for="floatingInput">Nombre</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="apellido" name="apellido"  placeholder="Apellido">
+        <label for="floatingInput">Apellido</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="edad" name="edad" placeholder="edad"> <!-- VALIDAR CON js -->
+        <label for="floatingInput">edad</label>
+      </div>  <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="contraseña"> <!-- VALIDAR CON js -->
+        <label for="floatingInput">Contraseña</label>
+        <button type="button" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" id="togglePassword" aria-label="Mostrar/Ocultar Contraseña">
+            <i class="fa-solid fa-eye"></i>
+        </button>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="email" name="email" placeholder="email"> <!-- VALIDAR CON js -->
+        <label for="floatingInput">email</label>
+      </div>
+     <!-- <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+      </div>
+     -->
+
+       <button type="button"  class="btn btn-primary" onclick="chequear()">Chequear</button>
+         
+      </form>
+    
+      <div class="list-group">
+       
+        <button type="button" class="list-group-item list-group-item-action" id="producto1" onclick="agregarProducto(producto1)">Primer producto</button>
+        <button type="button" class="list-group-item list-group-item-action" id="producto2" onclick="agregarProducto(producto2)" >Segundo producto</button>
+        <button type="button" class="list-group-item list-group-item-action" id="producto3" onclick="agregarProducto(producto3)" >Tercer Producto</button>
+        <button type="button" class="list-group-item list-group-item-action" id="producto4" onclick="agregarProducto(producto4)" disabled>Cuarto Producto</button>
+      </div>
+      <h1>Lista de Productos</h1>
+      <div id="products">
+        <!-- Listado de productos -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre Producto</th>
+                </tr>
+            </thead>
+            <tbody id="product-list">
+                <!-- Las filas se insertarán aquí dinámicamente -->
+            </tbody>
+          </table>
+        
+    </div>
+    </div>
+
+<footer style="margin-bottom:0px">
+    <div class="info" style="background-color: whitesmoke;">
+
+        <div class="about" > 
+            <h1>Labo 4</h1>
+       
+       
+            <i class="fa-solid fa-location-dot"></i><h5>Mar del Plata</h5>
+     
+        </div>
+        
+        <div>
+            <h1 >Contacto</h1>
+            <ul class="enlaces" style="display: flex; flex-direction: column; align-items: center;">
+             <li class="li" >   
+             <a  class="btni" href="https://www.linkedin.com/in/gast%C3%B3n-manuel-ftacla-04b57b229/"> <i class="fab fa-linkedin" href="https://www.linkedin.com/company/exactian/" style="color:blue" ></i></a>
+            </li>
+            </ul>
+        </div>
+    </div>
+</footer>
+ 
+</body>
+</html>

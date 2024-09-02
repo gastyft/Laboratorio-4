@@ -1,0 +1,108 @@
+.btn-primary{
+margin-top: 5x;
+
+}
+ 
+.container-fluid{
+  width: 100%;
+  right: 0;
+}
+.info{
+    
+  color: black;
+    display: flex;
+    width: 100%;
+    padding-left: 20px;
+    justify-content: center;
+}
+.enlaces{
+  list-style:none ;
+  display: flex;
+  padding-left: 2px;
+ 
+}
+
+#descript{
+  padding-right:10px;
+}
+.li{
+ padding-left: -20px;
+  height: 60px;
+}
+.fa-linkedin{
+  width: 100%;
+
+  font-size: 40px;
+  transition: transform 0.5s ease;
+}
+.fa-linkedin:hover {
+   font-size: 50px;
+  background-color: #c79633;
+   transform: scale(1.1); 
+}
+ 
+.fa-location-dot{
+  width: 100%;
+  color: #c79633;
+  font-size: 30px;
+}
+
+.powered-by {
+  text-align: center;
+  padding: 5px;
+   
+  background-color: #fff;  
+  width: 100%;
+  color: #555; 
+  font-size: 14px; 
+  border-top: 1px solid #ddd;  
+}
+button {
+border: none;
+background: none;
+padding: 0;
+cursor: pointer;
+}.about {
+  margin-right: 20px;
+}
+.position-relative {
+  position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+/* Eliminar el borde y el color de fondo del botón */
+/* Estilo base del botón */
+/* Estilo base del botón */
+#togglePassword {
+  border: none; /* Elimina el borde del botón */
+  background: transparent; /* Establece el fondo como transparente */
+  color: inherit; /* Hereda el color del texto del elemento padre */
+  cursor: pointer; /* Cambia el cursor a una mano para indicar clic */
+  outline: none; /* Elimina el contorno del botón cuando está en foco */
+}
+
+/* Estilo del botón cuando se pasa el mouse sobre él */
+#togglePassword:hover {
+  background: transparent; /* Mantiene el fondo transparente */
+  color: inherit; /* Mantiene el color del texto heredado */
+  border: none; /* Asegura que no haya borde al pasar el mouse */
+}
+
+/* Estilo del botón cuando está siendo clickeado */
+#togglePassword:active {
+  background: transparent; /* Mantiene el fondo transparente */
+  color: inherit; /* Mantiene el color del texto heredado */
+  border: none; /* Asegura que no haya borde al hacer clic */
+  outline: none; /* Asegura que no haya contorno al hacer clic */
+}
+
+/* Elimina el contorno cuando el botón está en foco (opcional) */
+#togglePassword:focus {
+  outline: none; /* Elimina el contorno cuando el botón está en foco */
+  box-shadow: none; /* Elimina el efecto de sombra que algunos navegadores aplican al hacer clic */
+}

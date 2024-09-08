@@ -1,3 +1,22 @@
+
+class person{ 
+  constructor(nombre,apellido, edad, email, contraseña,fechaNac,dni){
+
+
+this.nombre=nombre;
+this.apellido=apellido;
+this.contraseña=contraseña;
+this.email=email;
+this.edad=edad;
+this.fechaNac=fechaNac;
+this.dni=dni;
+}
+}
+
+let arrayStd=[];
+
+
+
 function validarString(str) {
   // Expresión para verificar si el string contiene solo letras, espacios y acentos
   const pattern = /^[a-zA-Z\u00C0-\u017F\s]*$/;
@@ -26,8 +45,38 @@ function validarEmail(email) {
   return validDomains.includes(domain);
 }
 
-function validarEdades(edad) {
-  if (edad < 100 && edad > 0) return true;
+function calcularEdad(fechaNac) {
+  // Obtener la fecha de nacimiento
+  const fechaNacimiento = new Date(fechaNac);
+  
+  // Obtener la fecha actual
+  const fechaActual = new Date();
+  
+  // Calcular la diferencia en años
+  let edad = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
+  
+  // Obtener mes y día de ambas fechas
+  const mesActual = fechaActual.getMonth(); // Mes actual (0-11)
+  const mesNacimiento = fechaNacimiento.getMonth(); // Mes de nacimiento (0-11)
+  const diaActual = fechaActual.getDate(); // Día actual
+  const diaNacimiento = fechaNacimiento.getDate(); // Día de nacimiento
+  
+  // Ajustar si el cumpleaños aún no ha pasado este año
+  if (mesNacimiento > mesActual || (mesNacimiento === mesActual && diaNacimiento > diaActual)) {
+      edad--; // La persona no ha cumplido años aún este año, restar uno
+  }
+  
+  return edad;
+}
+ 
+function validarFecha(fecha) { 
+  // Convertir la fecha de nacimiento a Date object
+  const fechaNacimiento = new Date(fecha);
+  // Verificar que la fecha no sea futura
+  if (fechaNacimiento <= Date.now()) return true;
+  return false;
+
+  
 }
 function mostrarAlertaError(str) {
     swal("Ups!", "Error en el campo "+str, "error");
@@ -67,27 +116,25 @@ function validarContraseña(password) {
 }
 
 function chequear() {
-    const nombre = document.getElementById("nombre").value;
-    const apellido = document.getElementById("apellido").value;
-    const edad = document.getElementById("edad").value;
-    const contraseña = document.getElementById("contraseña").value;
-    const email = document.getElementById("email").value;
-  if (!validarString(nombre)) {
-    mostrarAlertaError(nombre);
-  }
-
-  if (!validarString(nombre)) {
+    const nombre = document.getElementById("nombre").value.trim();
+    const apellido = document.getElementById("apellido").value.trim();
+    const contraseña = document.getElementById("contraseña").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const fechaNac = document.getElementById("fechaNac").value;
+    const dni = document.getElementById("dni").value;
+  
+  if (!validarString(nombre) || nombre.length == 0) {
     mostrarAlertaError("Nombre");
     return;
   }
 
-  if (!validarString(apellido)) {
+  if (!validarString(apellido) || apellido.length==0) {
     mostrarAlertaError("Apellido");
     return;
   }
 
-  if (!validarEdades(edad)) {
-    mostrarAlertaError("Edad");
+  if (!validarFecha(fechaNac)) {
+    mostrarAlertaError("Fecha de nacimiento");
     return;
   }
 
@@ -100,10 +147,44 @@ function chequear() {
     mostrarAlertaError("Email");
     return;
   }
+  if(!validarFecha(fechaNac)){
+    mostrarAlertaError("Fecha de nacimiento");
+    return;
+  }
+  if(!validarDNI(dni)){
+    mostrarAlertaError("DNI");
+    return;
+  }
+  if(calcularEdad(fechaNac)<18) {
+    mostrarAlertaError("El alumno debe ser mayor de edad");
+  return;
+  }
+  //agregar a array y calcula edad 
+  agregarArray(new person(nombre,apellido,calcularEdad(fechaNac),email,contraseña,fechaNac));
+  //limpiar los campos
+  document.getElementById("nombre").value = "";
+  document.getElementById("apellido").value = "";
+  document.getElementById("contraseña").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("fechaNac").value = "";
+  //mostrar alerta de exito
+  //agregar a array
+  //limpiar los campos
+  //mostrar alerta de exito
+  renderizarListaEstudiantes();
+     mostrarAlertaSuccess();
 
-  mostrarAlertaSuccess();
  
 }
+
+function finalizarCargaAlumnos(){
+document.querySelector(".form-horizontal").style.display="none";   
+}
+
+function agregarArray(obj){
+  arrayStd.push(obj);
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     const togglePassword = document.getElementById('togglePassword');
     const passwordField = document.getElementById('contraseña');
@@ -114,8 +195,8 @@ document.addEventListener("DOMContentLoaded", function() {
         passwordField.type = type;
         
         // Alternar el ícono entre 'eye' y 'eye-slash'
-        const icon = togglePassword.querySelector('i');
-        icon.classList.toggle('fa-eye');
+        const icon = togglePassword.querySelector('i'); //con Font Awesome
+        icon.classList.toggle('fa-eye');      
         icon.classList.toggle('fa-eye-slash');
     });
 });
@@ -140,6 +221,41 @@ const producto4 = "Cuarto producto";
         
     }
 }
+function renderizarListaEstudiantes() {
+  const listaElement = document.getElementById('estudiantes-list');
+  listaElement.innerHTML = ''; // Limpia la lista antes de renderizar
+  let i = 1;
+
+  arrayStd.forEach((_estudiante) => {
+    const fila = document.createElement('tr'); // Crea una nueva fila
+            
+    const celdaNumero = document.createElement('th'); // Crea celda para el número
+    celdaNumero.scope = "row";
+    celdaNumero.textContent = i++;
+    
+    const celdaNombre = document.createElement('td'); // Crea celda para el nombre del estudiante
+    celdaNombre.textContent = _estudiante.nombre;
+
+    const celdaApellido = document.createElement('td'); // Crea celda para el apellido
+    celdaApellido.textContent = _estudiante.apellido;
+    
+    const celdaEdad = document.createElement('td'); // Crea celda para la edad
+    celdaEdad.textContent = _estudiante.edad;
+
+    const celdaEmail = document.createElement('td'); // Crea celda para el email
+    celdaEmail.textContent = _estudiante.email;
+
+    const celdaDNI = document.createElement('td'); // Crea celda para el email
+    celdaDNI.textContent = _estudiante.dni;
+    fila.appendChild(celdaNumero); // Añade celda de número a la fila
+    fila.appendChild(celdaNombre); // Añade celda de nombre a la fila
+    fila.appendChild(celdaApellido); // Añade celda de apellido a la fila
+    fila.appendChild(celdaEdad); // Añade celda de edad a la fila
+    fila.appendChild(celdaEmail); // Añade celda de email a la fila
+    fila.appendChild(celdaDNI); // Añade celda de dni
+    listaElement.appendChild(fila); // Añade fila a la tabla
+  });
+}
 
 function renderizarListaDeseados() {
   const listaElement = document.getElementById('product-list');
@@ -161,3 +277,16 @@ productos.forEach((producto) => {
   listaElement.appendChild(fila); // Añade fila a la tabla
   });
 }
+
+function validarDNI(dni) { //Valida el dni que este entre cierto rango
+  if (dni < 2000000 || dni > 70000000) {
+    // Si el DNI está fuera del rango, 
+ //   alert('El DNI debe estar entre 2000000 y 70000000');
+  return false;
+  }
+  else 
+  return true;
+}
+
+
+ 

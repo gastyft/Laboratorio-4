@@ -1,5 +1,5 @@
 <html lang="en">
-    <head>
+    <head >
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>TP 1 Forms</title>
@@ -12,11 +12,11 @@
         <link rel="icon" type="image/png" href="UTN-favicon.png">
     </head>
 <body>
-    <header style="display:flex; justify-content: center; padding-top:12px; font-size:30px; ">
+    <header  style="display:flex; justify-content: center; padding-top:12px; font-size:30px; ">
         
-        <a class="navbar-brand" href="http://www.mdp.utn.edu.ar" style="margin-left: -500px;" >
+        <a  class="navbar-brand" href="http://www.mdp.utn.edu.ar" style="margin-left: -500px;" >
       
-            <img src="UTN-iso-new.png" style="height: 60px; " alt="Logo"  class="d-inline-block align-text-top">
+            <img  src="UTN-iso-new.png" style="height: 60px; " alt="Logo"  class="d-inline-block align-text-top">
           </a>
         
         <h1  style="padding-top:5px; padding-left: 330px;" >PRÁCTICA TP 1 FORMS </h1>
@@ -24,21 +24,25 @@
      </header>
     <div class="container">
         <br><br>
-        <form > 
-      
+        <form  class="form-horizontal">      
     <div class="form-floating mb-3">
-        <input type="text" class="form-control" name="nombre"  id="nombre" placeholder="Nombre" >
+        <input type="text" class="form-control" name="nombre"  id="nombre" placeholder="Nombre" required >
         <label for="floatingInput">Nombre</label>
       </div>
       <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="apellido" name="apellido"  placeholder="Apellido">
+        <input type="text" class="form-control" id="apellido" name="apellido"  placeholder="Apellido" required >
         <label for="floatingInput">Apellido</label>
       </div>
       <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="edad" name="edad" placeholder="edad"> <!-- VALIDAR CON js -->
-        <label for="floatingInput">edad</label>
-      </div>  <div class="form-floating mb-3">
-        <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="contraseña"> <!-- VALIDAR CON js -->
+        <input type="date" class="form-control" id="fechaNac" name="fechaNac"  placeholder="Fecha Nacimiento" required>
+        <label for="floatingInput">Fecha Nacimiento</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="number" class="form-control" id="dni" name="dni" required >
+        <label for="floatingInput">DNI</label>
+      </div>
+       <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="contraseña" required> <!-- VALIDAR CON js -->
         <label for="floatingInput">Contraseña</label>
         <button type="button" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" id="togglePassword" aria-label="Mostrar/Ocultar Contraseña">
             <i class="fa-solid fa-eye"></i>
@@ -48,16 +52,31 @@
         <input type="text" class="form-control" id="email" name="email" placeholder="email"> <!-- VALIDAR CON js -->
         <label for="floatingInput">email</label>
       </div>
-     <!-- <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-        <label for="floatingPassword">Password</label>
-      </div>
-     -->
+  
 
        <button type="button"  class="btn btn-primary" onclick="chequear()">Chequear</button>
-         
+       <button type="button" class="btn btn-danger" onclick="finalizarCargaAlumnos()">Finalizar carga de alumnos</button>
       </form>
-    
+      
+      <h1>Lista de Estudiantes</h1>
+      <div id="estudiantes">
+        <!-- Listado de estudiantes -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Edad</th>
+                    <th scope="col">email</th>
+                </tr>
+            </thead>
+            <tbody id="estudiantes-list">
+                <!-- Las filas se insertarán aquí dinámicamente -->
+            </tbody>
+          </table>
+        
+    </div>
       <div class="list-group">
        
         <button type="button" class="list-group-item list-group-item-action" id="producto1" onclick="agregarProducto(producto1)">Primer producto</button>
@@ -72,7 +91,8 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Nombre Producto</th>
+                    <th scope="col">Nombre</th>
+                   
                 </tr>
             </thead>
             <tbody id="product-list">

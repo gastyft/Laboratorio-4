@@ -12,14 +12,23 @@
         <link rel="icon" type="image/png" href="UTN-favicon.png">
     </head>
 <body>
-    <header  style="display:flex; justify-content: center; padding-top:12px; font-size:30px; ">
-        
-        <a  class="navbar-brand" href="http://www.mdp.utn.edu.ar" style="margin-left: -500px;" >
-      
+    <header  class="navbar bg-light" style="padding-top:12px; font-size:30px; ">
+    
+        <div class="container-fluid">
+          <a   href="http://www.mdp.utn.edu.ar">
             <img  src="UTN-iso-new.png" style="height: 60px; " alt="Logo"  class="d-inline-block align-text-top">
           </a>
+         <h1 class="mx-auto" >PRÁCTICA TP 1 FORMS </h1>
+      
+     
+        </div>
+      
+       <!-- <a  class="navbar-brand" href="http://www.mdp.utn.edu.ar" style="margin-left: -500px;" >
+      
+            <img  src="UTN-iso-new.png" style="height: 60px; " alt="Logo"  class="d-inline-block align-text-top">
+          </a>-->
         
-        <h1  style="padding-top:5px; padding-left: 330px;" >PRÁCTICA TP 1 FORMS </h1>
+       
         
      </header>
     <div class="container">
@@ -58,8 +67,9 @@
        <button type="button" class="btn btn-danger" onclick="finalizarCargaAlumnos()">Finalizar carga de alumnos</button>
       </form>
       
-      <h1>Lista de Estudiantes</h1>
-      <div id="estudiantes">
+      
+      <div id="estudiantes" hidden>
+        <h1>Lista de Estudiantes</h1>
         <!-- Listado de estudiantes -->
         <table class="table">
             <thead>
@@ -73,9 +83,14 @@
             </thead>
             <tbody id="estudiantes-list">
                 <!-- Las filas se insertarán aquí dinámicamente -->
-            </tbody>
+               
+           
           </table>
-        
+         
+      </tbody>
+      <tfoot > 
+        <button type="button" class="btn btn-danger" onclick="volverForm()">Volver atras</button>
+      </tfoot>
     </div>
       <div class="list-group">
        

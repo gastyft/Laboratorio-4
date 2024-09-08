@@ -72,8 +72,13 @@ function calcularEdad(fechaNac) {
 function validarFecha(fecha) { 
   // Convertir la fecha de nacimiento a Date object
   const fechaNacimiento = new Date(fecha);
+    
+  const anioNacimiento = parseInt(fechaNacimiento.getFullYear());
   // Verificar que la fecha no sea futura
-  if (fechaNacimiento <= Date.now()) return true;
+  if (fechaNacimiento <= Date.now() && anioNacimiento >= 1985) return true;
+
+ 
+   //validacion para que al validar la edad esta sea razonable
   return false;
 
   
@@ -179,6 +184,15 @@ function chequear() {
 
 function finalizarCargaAlumnos(){
 document.querySelector(".form-horizontal").style.display="none";   
+const estudiantesDiv = document.getElementById("estudiantes");
+estudiantesDiv.style.display = "block";
+estudiantesDiv.removeAttribute("hidden"); // Elimina el atributo hidden
+}
+function volverForm(){
+  document.querySelector(".form-horizontal").style.display="block";   
+  const estudiantesDiv = document.getElementById("estudiantes");
+  estudiantesDiv.style.display = "none";
+  estudiantesDiv.setAttribute("hidden", ""); // Agrega el atributo hidden
 }
 
 function agregarArray(obj){

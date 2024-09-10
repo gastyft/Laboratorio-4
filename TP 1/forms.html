@@ -103,10 +103,34 @@
           <!-- Las filas se insertarán aquí dinámicamente -->
         </tbody>
       </table>
-      <button type="button" class="btn btn-danger" onclick="volverForm()">
+      <button type="button" class="btn btn-danger" onclick="volverEstudiantes()">
         Volver atras
       </button>
-    </div>
+      <button type="button" class="btn btn-warning" onclick="guardarNotas(estudianteActual)"> <!--BORRAR BOTON DESPUES-->
+        Guardar Notas
+      </button>
+    </div>   
+     
+    <div id="verNotas" hidden> <!--Hacer algo parecido al div agregarMaterias pero para un boton "mostrar notas por alumno"-->
+      <h1 id="h1notas"></h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Materia</th>
+            <th scope="col">Nota</th>
+          </tr>
+        </thead>
+        <tbody id="verNotas-list">
+          <!-- Las filas se insertarán aquí dinámicamente -->
+        </tbody>
+      </table>
+      <button type="button" class="btn btn-danger" onclick="volverEstudiantes()">
+        Volver atras
+      </button>
+     
+    </div>    
+     
 
 
 

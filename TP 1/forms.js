@@ -232,6 +232,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function ordenarAlfabetic(){
   arrayStd.sort((a, b) => a.apellido.localeCompare(b.apellido));
 }
+
 function renderizarListaEstudiantes() {
   const listaElement = document.getElementById('estudiantes-list');
   listaElement.innerHTML = ''; // Limpia la lista antes de renderizar
@@ -260,9 +261,17 @@ function renderizarListaEstudiantes() {
     const celdaEmail = document.createElement('td'); // Crea celda para el email
     celdaEmail.textContent = _estudiante.email;
 
+    const celdaVer = document.createElement('td'); // Crea celda para la acción de agregar materias
+    const botonVerNotas = document.createElement('button');
+    botonVerNotas.textContent = "Ver notas";
+    botonVerNotas.className = 'btn btn-info btn-sm';
+    botonVerNotas.addEventListener('click', () => verNotas(_estudiante));
+
+
+
     const celdaAccion = document.createElement('td'); // Crea celda para la acción de agregar materias
     const botonAgregar = document.createElement('button');
-    botonAgregar.textContent = "Agregar Materias";
+    botonAgregar.textContent = "Agregar Notas";
     botonAgregar.className = 'btn btn-warning btn-sm';
     botonAgregar.addEventListener('click', () => agregarMaterias(_estudiante)); // Añade evento de click al botón para agregar materias
     
@@ -275,6 +284,7 @@ function renderizarListaEstudiantes() {
     fila.appendChild(celdaDNI); // Añade celda de dni
     fila.appendChild(celdaEdad); // Añade celda de edad a la fila
     fila.appendChild(celdaEmail); // Añade celda de email a la fila
+    fila.appendChild(botonVerNotas); // Añade celda de ver notas por alumno
     fila.appendChild(celdaAccion);
     listaElement.appendChild(fila); // Añade fila a la tabla
   });
@@ -314,21 +324,36 @@ const materia4 = "Literatura";
 
 materias.push(materia1, materia2, materia3, materia4);
 
-function agregarMaterias(estudiante) {
-  document.getElementById("agregarMaterias").style.display = "block";   
+
+let estudianteActual = null;  //Creo variable global para que en el html al dar click en guardar notas 
+//se traiga ese estudiante actual al que se quiere cargar las notas 
+function agregarMaterias(_estudiante) { /// Ver si pasa el estudiante o hay que hacer otra forma para traerse el estudiante 
+
+  estudianteActual=_estudiante;
+    // Mostrar el div para agregar materias
+    const agregarList =document.querySelector("#agregarMaterias");
+ 
+   agregarList.removeAttribute("hidden");
+    agregarList.style.display="block";
+  // Cambiar el título para reflejar el estudiante actual
+  document.getElementById("h1Materias").innerHTML = "Agregar notas para " + _estudiante.nombre + " " + _estudiante.apellido;
+ 
+  // Llamar a la función para renderizar la lista de materias
+  renderizarListaMaterias(_estudiante); 
+  // Ocultar el div de estudiantes
   const estudiantesDiv = document.getElementById("estudiantes");
-  estudiantesDiv.style.display = "none";
-  estudiantesDiv.setAttribute("hidden", ""); // Agrega el atributo hidden
-  document.getElementById("h1Materias").innerHTML = "Agregar materias para " + estudiante.nombre + " " + estudiante.apellido;
-  
-  renderizarListaMaterias(estudiante); // Llamamos con el estudiante actual
+  estudiantesDiv.style.display = "none"; // Oculta el div
+   estudiantesDiv.setAttribute("hidden", ""); // Agrega el atributo hidden
+
 }
 
-function renderizarListaMaterias(estudiante) {
-  const listaElement = document.getElementById('materias-list');
+function renderizarListaMaterias(_estudiante) {
+  const listaElement = document.getElementById('materias-list'); // Asegúrate de que el ID exista en el HTML
   listaElement.innerHTML = ''; // Limpia la lista antes de renderizar
+
   let i = 1;
 
+  // Recorre la lista de materias y genera las filas con inputs para las notas
   materias.forEach((materia) => {
     const fila = document.createElement('tr'); // Crea una nueva fila
 
@@ -340,12 +365,11 @@ function renderizarListaMaterias(estudiante) {
     celdaNombre.textContent = materia;
 
     const celdaNota = document.createElement('td'); // Crea celda para la nota
-    const inputNota = document.createElement('input');
+    let inputNota = document.createElement('input');
     inputNota.type = "number";
-    inputNota.className="form-control";
     inputNota.max = 10;
     inputNota.min = 1;
-    inputNota.required = true;
+    inputNota.id = `nota-${materia}`; // Dar un ID único basado en la materia
     celdaNota.appendChild(inputNota);
 
     fila.appendChild(celdaNumero); // Añade celda de número a la fila
@@ -353,38 +377,104 @@ function renderizarListaMaterias(estudiante) {
     fila.appendChild(celdaNota); // Añade celda de nota a la fila
 
     listaElement.appendChild(fila); // Añade fila a la tabla
-
-
-  });
-
-  // Añadimos un botón para guardar las notas
-  const guardarNotasBtn = document.createElement('button');
-  guardarNotasBtn.textContent = 'Guardar Notas';
-  guardarNotasBtn.addEventListener('click', () => guardarNotas(estudiante));
-  listaElement.appendChild(guardarNotasBtn);
-
-}
-
-function guardarNotas(estudiante) { //VER COMO GUARDAR ESTUDIANTE CON SUS MATERIAS Y NOTAS 
-  //VER DE HACERLO con un array EstudianteXMaterias donde se almacene otro array estudiante con las notas de cada materias
-  materias.forEach((materia) => {
-    const inputNota = document.getElementById(`nota-${materia}`);
-    const nota = inputNota ? inputNota.value : null;
-
-    if (nota) {
-      // Crear una nueva instancia de MateriaEstudiante con la nota y el estudiante actual
-      const materiaEstudiante = new MateriaEstudiante(estudiante, materia, nota);
-      materiasEstudiantes.push(materiaEstudiante);
-    }
   });
  
 }
 
 
 
-function volverForm(){
-  document.querySelector(".form-horizontal").style.display="block";   
-  const estudiantesDiv = document.getElementById("estudiantes");
-  estudiantesDiv.style.display = "none";
-  estudiantesDiv.setAttribute("hidden", ""); // Agrega el atributo hidden
+
+ 
+                  
+function guardarNotas(estudiante) { //VER COMO GUARDAR ESTUDIANTE CON SUS MATERIAS Y NOTAS 
+  //VER DE HACERLO con un array EstudianteXMaterias donde se almacene otro array estudiante con las notas de cada materias
+  //Ver como capturar depende las materias del estudiante su propia nota
+  if (!estudiante) {
+    alert("Estudiante no proporcionado.");
+    return;
+  }
+  materiasEstudiantes = materiasEstudiantes.filter(m => m.estudiante !== estudiante);
+  materias.forEach((materia) => {
+    const inputNota = document.getElementById(`nota-${materia}`);
+    const nota = inputNota ? inputNota.value : null;
+
+    if (nota) {
+      if(nota<11 && nota>0){
+      // Carga de array de MateriaEstudiante 
+      const materiaEstudiante = new MateriaEstudiante(estudiante, materia, nota);
+      materiasEstudiantes.push(materiaEstudiante);
+    }
+    else{
+      alert(`La nota para la materia ${materia} debe ser un número entre 1 y 10.`);
+      return;
+    }
+    } else {
+      alert(`Falta agregar la nota para la materia ${materia}.`);
+      return;
+    }
+  });
+ 
+}
+
+
+function volverEstudiantes() {
+  const est = document.getElementById("estudiantes");
+  est.removeAttribute("hidden");
+  est.style.display = "block"; // Muestra el div de estudiantes
+ 
+  const agregarMateriasDiv = document.getElementById("agregarMaterias");
+  agregarMateriasDiv.style.display = "none"; // Oculta el div de agregar materias
+  agregarMateriasDiv.setAttribute("hidden", ""); // Agrega el atributo hidden para asegurarse de que esté oculto
+}
+
+function verNotas(_estudiante){
+
+   
+const notas = document.getElementById("verNotas");
+  notas.removeAttribute("hidden");
+  notas.style.display = "block"; // Muestra el div de ver notas
+  const  listaEst = document.getElementById("estudiantes");
+  listaEst.style.display = "none"; // Oculta el div de estudiantes
+listaEst.setAttribute("hidden", ""); 
+renderizarListaNotas(_estudiante);
+}
+
+function renderizarListaNotas(_estudiante) {  //Se llame ne la lista de estudiantes como agregar las notas
+  const listaElement = document.getElementById('verNotas-list'); // Asegúrate de que el ID exista en el HTML
+  listaElement.innerHTML = ''; // Limpia la lista antes de renderizar
+  let i = 1;
+  document.getElementById("h1notas").innerHTML = "Agregar materias para " + _estudiante.nombre + " " + _estudiante.apellido;
+
+  // Recorre la lista de materias y genera las filas con inputs para las notas
+  const notasEstudiante = materiasEstudiantes.filter((item) => item.persona === _estudiante);
+  materiasEstudiantes.forEach((alumno) => {
+    const fila = document.createElement('tr'); // Crea una nueva fila
+
+    const celdaNumero = document.createElement('th'); // Crea celda para el número
+    celdaNumero.scope = "row";
+    celdaNumero.textContent = i++;
+
+    const celdaNombre = document.createElement('td'); // Crea celda para el nombre de la materia
+    celdaNombre.textContent = alumno.materia;
+
+    const celdaNota = document.createElement('td'); // Crea celda para la nota
+    celdaNota.textContent = alumno.nota;
+ 
+    fila.appendChild(celdaNumero); // Añade celda de número a la fila
+    fila.appendChild(celdaNombre); // Añade celda de nombre a la fila
+    fila.appendChild(celdaNota); // Añade celda de nota a la fila
+
+    listaElement.appendChild(fila); // Añade fila a la tabla
+  });
+ 
+}
+
+function volverEstudiantesdesdeNotas() {
+  const est = document.getElementById("estudiantes");
+  est.removeAttribute("hidden");
+  est.style.display = "block"; // Muestra el div de estudiantes
+ 
+  const agregarMateriasDiv = document.getElementById("verNotas");
+  agregarMateriasDiv.style.display = "none"; // Oculta el div de agregar materias
+  agregarMateriasDiv.setAttribute("hidden", ""); // Agrega el atributo hidden para asegurarse de que esté oculto
 }

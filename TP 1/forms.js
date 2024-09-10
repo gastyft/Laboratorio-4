@@ -297,7 +297,13 @@ function validarDNI(dni) { //Valida el dni que este entre cierto rango
  //   alert('El DNI debe estar entre 2000000 y 70000000');
   return false;
   }
-  else 
+     if (arrayStd.some(estudiante => estudiante.dni === dni)) {
+      mostrarAlertaError("DNI. Se repite el DNI");
+      setIntervals(() => {  
+        mostrarAlertaError("DNI. Se repite el DNI");
+      })
+      return false;
+    }
   return true;
 }
 ///
@@ -370,6 +376,12 @@ function renderizarListaMaterias(_estudiante) {
     inputNota.max = 10;
     inputNota.min = 1;
     inputNota.id = `nota-${materia}`; // Dar un ID único basado en la materia
+    
+    const materiaEstudiante = materiasEstudiantes.find(me => me.estudiante === _estudiante && me.materia === materia);
+
+    if (materiaEstudiante) {
+      inputNota.value = materiaEstudiante.nota; // Asigna la nota existente
+    }
     celdaNota.appendChild(inputNota);
 
     fila.appendChild(celdaNumero); // Añade celda de número a la fila
@@ -393,8 +405,13 @@ function guardarNotas(estudiante) { //VER COMO GUARDAR ESTUDIANTE CON SUS MATERI
     alert("Estudiante no proporcionado.");
     return;
   }
+  let errorEncontrado = false;
+
+  //Limpia las notas para renderizar las nuevas notas 
   materiasEstudiantes = materiasEstudiantes.filter(m => m.estudiante !== estudiante);
+
   materias.forEach((materia) => {
+     
     const inputNota = document.getElementById(`nota-${materia}`);
     const nota = inputNota ? inputNota.value : null;
 
@@ -406,14 +423,15 @@ function guardarNotas(estudiante) { //VER COMO GUARDAR ESTUDIANTE CON SUS MATERI
     }
     else{
       alert(`La nota para la materia ${materia} debe ser un número entre 1 y 10.`);
-      return;
+      errorEncontrado=true;
     }
     } else {
       alert(`Falta agregar la nota para la materia ${materia}.`);
-      return;
+      errorEncontrado=true;
     }
-  });
- 
+ });
+  if(!errorEncontrado)volverEstudiantes();
+
 }
 
 
@@ -445,8 +463,9 @@ function renderizarListaNotas(_estudiante) {  //Se llame ne la lista de estudian
   let i = 1;
   document.getElementById("h1notas").innerHTML = "Agregar materias para " + _estudiante.nombre + " " + _estudiante.apellido;
 
-  // Recorre la lista de materias y genera las filas con inputs para las notas
-  const notasEstudiante = materiasEstudiantes.filter((item) => item.persona === _estudiante);
+ 
+ 
+
   materiasEstudiantes.forEach((alumno) => {
     const fila = document.createElement('tr'); // Crea una nueva fila
 

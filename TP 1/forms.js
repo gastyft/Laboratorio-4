@@ -461,12 +461,13 @@ function renderizarListaNotas(_estudiante) {  //Se llame ne la lista de estudian
   const listaElement = document.getElementById('verNotas-list'); // Asegúrate de que el ID exista en el HTML
   listaElement.innerHTML = ''; // Limpia la lista antes de renderizar
   let i = 1;
-  document.getElementById("h1notas").innerHTML = "Agregar materias para " + _estudiante.nombre + " " + _estudiante.apellido;
+  document.getElementById("h1notas").innerHTML = "Ver notas de " + _estudiante.nombre + " " + _estudiante.apellido;
 
  
- 
+  const notasEstudiante = materiasEstudiantes.filter(alumno => alumno.estudiante === _estudiante);
 
-  materiasEstudiantes.forEach((alumno) => {
+  // Renderizar solo las materias del estudiante actual
+  notasEstudiante.forEach((alumno) => {
     const fila = document.createElement('tr'); // Crea una nueva fila
 
     const celdaNumero = document.createElement('th'); // Crea celda para el número
@@ -490,10 +491,11 @@ function renderizarListaNotas(_estudiante) {  //Se llame ne la lista de estudian
 
 function volverEstudiantesdesdeNotas() {
   const est = document.getElementById("estudiantes");
-  est.removeAttribute("hidden");
   est.style.display = "block"; // Muestra el div de estudiantes
+  est.removeAttribute("hidden");
+  const verNotasDiv = document.getElementById("verNotas");
+  verNotasDiv.style.display = "none";
+  verNotasDiv.setAttribute("hidden", "");
  
-  const agregarMateriasDiv = document.getElementById("verNotas");
-  agregarMateriasDiv.style.display = "none"; // Oculta el div de agregar materias
-  agregarMateriasDiv.setAttribute("hidden", ""); // Agrega el atributo hidden para asegurarse de que esté oculto
+ 
 }

@@ -115,8 +115,7 @@ function buscar(){
     // Agregar el eventListener para capturar el evento "Enter"
 buscar.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
-        event.preventDefault(); // Prevenir comportamiento predeterminado (opcional)
-        // Aquí puedes llamar a la función de búsqueda o realizar la acción deseada
+        event.preventDefault(); 
         arrBuscar=arrEmpl.filter(employee=> employee.firstName.toLowerCase().includes(buscar.value.toLowerCase()) || employee.lastName.toLowerCase().includes(buscar.value.toLowerCase()));
 
         const listaElement = document.getElementById('verEmployees-list');
@@ -169,7 +168,7 @@ function limpiarBusqueda(){
      renderizarEmployees();
 }
 
-window.onload = init;
+window.onload = init;  // INIT PARA QUE RENDERiCE LOS DATOS DE LA API N BIEN SE RECARGA LA PAGINA
  
 
  

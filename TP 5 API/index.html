@@ -15,6 +15,7 @@
  </head>
  <body>
    <header>
+   
     <header class="navbar bg-light" style="padding-top: 12px; font-size: 30px">
         <div class="container-fluid">
           <a href="http://www.mdp.utn.edu.ar">
@@ -25,12 +26,34 @@
       </header>
    </header>
    <div class="container">
- 
+    <button class="btn btn-primary" id="botonCrear" onclick="botonCrear()">Crear Empleado</button> 
+    <button class="btn btn-danger" onclick="">Borrar Empleado</button>
+    <button class="btn btn-primary" onclick="">Editar Empleado</button> 
 
+    <form class="form-horizontal" id="form" hidden >
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" name="firstName" id="firstName" placeholder="firstName" required />
+        <label for="floatingInput">First name</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="lastName" required />
+        <label for="floatingInput">Last name</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="number" class="form-control" id="companyId" name="companyID"  min="1" max="10"  required  />
+        <label for="floatingInput">CompanyID</label>
+      </div>
+      <button type="submit" class="btn btn-primary" onclick="crearEmployee()">Crear Empleado</button> 
+      <button class="btn btn-danger" onclick="botonVolver()">Volver</button> 
+    </form>
+   
+<br>
   <!-- <button type="button" class="btn btn-info" onclick="apiGetEmployees()">GET empleados</button> 
  <button type="button" class="btn btn-primary" onclick="mostrarSuccess('awdawd')">Primary</button> 
  <button type="button" class="btn btn-danger" onclick="mostrarError('awdawd')">Primary</button> 
 -->
+<br>
+<h3>Buscar empleado</h3>
   <input type="text" class="form-control" id="buscar" height="30%" placeholder="Buscar por Nombre" onclick="buscar()" > <!--input de busqueda-->
  
   <button class="btn btn-primary" onclick="limpiarBusqueda()">Limpiar búsqueda</button> 

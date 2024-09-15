@@ -223,9 +223,9 @@ function botonVolver() {
 }
 
 function crearEmployee() {
- /* document.getElementById("form").addEventListener("submit", function (event) {
+  document.getElementById("form").addEventListener("submit", function (event) {
     event.preventDefault();
-*/
+ 
     // Recoge los valores del formulario
     const firstName = document.getElementById("firstName").value;
     const lastName = document.getElementById("lastName").value;
@@ -252,12 +252,11 @@ function crearEmployee() {
           if (xhr.status === 200) {
             // Solo intenta parsear si hay datos en la respuesta
             const responseText = xhr.responseText;
-            if (responseText) {
-              console.log("Success:", JSON.parse(responseText));
-            } else {
-              console.log("Success: No content returned");
-            }
+            mostrarSuccess("Se creo correctamente");
+            init();
+            botonVolver();
           } else {
+            mostrarError("No se pudo crear el empleado");
             console.error(
               "Error:",
               xhr.status,
@@ -272,6 +271,7 @@ function crearEmployee() {
     };
 
     xhr.send(JSON.stringify(employee)); // Convierte el objeto a una cadena JSON
+});
   }
 
 
@@ -290,6 +290,7 @@ function eliminarEmployee(employeeId) {
           mostrarSuccess("Se elimino correctamente");
           init();
         } else {
+            mostrarError("No se pudo eliminar el empleado")
           console.error("Error:", xhr.status, xhr.statusText, xhr.responseText);
         }
       } catch (e) {

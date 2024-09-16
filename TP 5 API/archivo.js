@@ -52,10 +52,11 @@ function apiGetCompany() {
     });
 }
 
+
 async function promiseGets() {
   await Promise.all([apiGetEmployees(), apiGetCompany()]);
 }
-
+ 
 function renderizarEmployees() {
   const listaElement = document.getElementById("verEmployees-list");
   listaElement.innerHTML = ""; // Limpia la lista antes de renderizar
@@ -110,6 +111,7 @@ async function init() {
   try {
     await promiseGets();
     renderizarEmployees();
+    cargarCompanies();
   } catch (err) {
     mostrarError("Error al obtener empleados o compañías");
   }
@@ -222,6 +224,19 @@ function botonVolver() {
   ocultarBuscar.removeAttribute("hidden");
 }
 
+function cargarCompanies(){
+const selectList =document.getElementById("companyId");
+
+arrComp.forEach(company=>{
+  const crearCompany = document.createElement("option");
+  crearCompany.textContent = company.name;
+  crearCompany.value =company.companyId;
+
+  selectList.appendChild(crearCompany);
+
+});
+
+}
 function crearEmployee() {
   document.getElementById("form").addEventListener("submit", function (event) {
     event.preventDefault();
@@ -301,16 +316,17 @@ function eliminarEmployee(employeeId) {
 
   xhr.send(); // No se necesita cuerpo para una solicitud DELETE
 }
-
-/*  
+ /*  
+ 
  for(let i=0; i<1001;i++){
  
          eliminarEmployee(i); 
      }
 
-   */
+ */
 
-        /*
+     /*  
+
  for(let i=0; i<1000;i++){
 
      const employee = {
@@ -348,4 +364,5 @@ function eliminarEmployee(employeeId) {
     
             xhr.send(JSON.stringify(employee)); // Convierte el objeto a una cadena JSON
         }  
-          */
+         
+       */

@@ -49,13 +49,13 @@ let total=0;
  
     const celdaNombre = document.createElement('td');
     celdaNombre.textContent=prod.nombre;
-
+     
     const celdaPrecio= document.createElement('td');
     celdaPrecio.textContent=prod.precio;
 
     const celdaEliminar=document.createElement('button');
     celdaEliminar.textContent='Eliminar';
-    celdaEliminar.classList.add('btn', 'btn-danger');
+    celdaEliminar.className= "btn btn-danger";
     celdaEliminar.addEventListener('click', ()=>eliminar(prod.nombre));
 
     fila.appendChild(celdaNombre);

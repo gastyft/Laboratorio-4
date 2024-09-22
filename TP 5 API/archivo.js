@@ -20,6 +20,7 @@ let arrComp = [];
 
 let url = "https://utn-lubnan-api-1.herokuapp.com/api";
 
+
 function mostrarError(str) {
   swal("Ups!", "Error en el campo " + str, "error");
 }
@@ -28,20 +29,75 @@ function mostrarSuccess(str) {
   swal("Operación exitosa", str, "success");
 }
 
+
 function apiGetEmployees() {
-  return fetch(url + "/Employee")
-    .then((response) => response.json())
-    .then((data) => {
-      arrEmpl = data;
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+ 
+    xhr.open('GET', url+ "/Employee");
+    
+    xhr.onload = function() {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(xhr.responseText);  // Resolver la promesa con la respuesta
+      } else {
+        reject(new Error("Error: "+ xhr.status));  // Rechazar si el estado no es exitoso
+      }
+    };
+
+    xhr.onerror = function() {
+      reject(new Error('Error de red'));  // Rechazar si hay un error de red
+    };
+
+    xhr.send();
+  });
+}
+
+// Conectar con el API y obtener los datos
+function connectEmployee() {
+ return apiGetEmployees()
+    .then(data => {
+      arrEmpl =  JSON.parse(data);  // Asumimos que la respuesta es JSON
+      console.log(arrEmpl);  // Mostrar los datos de la compañía
     })
-    .catch((err) => {
-      console.error("Error:", err);
-      mostrarError("Error al obtener empleados");
+    .catch(error => {
+      console.error('Error obteniendo las empleados:', error);
     });
 }
 
 function apiGetCompany() {
-  return fetch(url + "/Company")
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+ 
+    xhr.open('GET', url + "/Company");
+    
+    xhr.onload = function() {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(xhr.responseText);  // Resolver la promesa con la respuesta
+      } else {
+        reject(new Error("Error: "+ xhr.status));  // Rechazar si el estado no es exitoso
+      }
+    };
+
+    xhr.onerror = function() {
+      reject(new Error('Error de red'));  // Rechazar si hay un error de red
+    };
+
+    xhr.send();
+  });
+}
+
+// Conectar con el API y obtener los datos
+function connectCompany() {
+ return apiGetCompany()
+    .then(data => {
+      arrComp = JSON.parse(data);  // Asumimos que la respuesta es JSON
+      console.log(arrComp);  // Mostrar los datos de la compañía
+    })
+    .catch(error => {
+      console.error('Error obteniendo las compañías:', error);
+    });
+}
+ /* return fetch(url + "/Company")
     .then((response) => response.json())
     .then((data) => {
       arrComp = data;
@@ -52,11 +108,14 @@ function apiGetCompany() {
     });
 }
 
+*/
+
 
 async function promiseGets() {
-  await Promise.all([apiGetEmployees(), apiGetCompany()]);
+  await Promise.all([connectEmployee(), connectCompany()]);
 }
- 
+
+
 function renderizarEmployees() {
   const listaElement = document.getElementById("verEmployees-list");
   listaElement.innerHTML = ""; // Limpia la lista antes de renderizar
@@ -68,7 +127,7 @@ function renderizarEmployees() {
     for (let company of arrComp) {
       if (company.companyId === employee.companyId) {
         strCompany = company.name;
-        break; // Salimos del bucle al encontrar la compañía
+        break; 
       }
     }
 
@@ -107,15 +166,8 @@ function renderizarEmployees() {
   });
 }
 
-async function init() {
-  try {
-    await promiseGets();
-    renderizarEmployees();
-    cargarCompanies();
-  } catch (err) {
-    mostrarError("Error al obtener empleados o compañías");
-  }
-}
+
+
 
 function buscar() {
   const buscar = document.getElementById("buscar");
@@ -190,12 +242,12 @@ function limpiarBusqueda() {
   renderizarEmployees();
 }
 
-window.onload = init; // INIT PARA QUE RENDERiCE LOS DATOS DE LA API N BIEN SE RECARGA LA PAGINA
 
 function botonCrear() {
   const botonCrear = document.getElementById("form");
   botonCrear.removeAttribute("hidden");
   botonCrear.style.display = "block"; // Muestra el form
+  
   const listaEmp = document.getElementById("verEmployees");
   listaEmp.style.display = "none"; // Oculta la lista de empleados
   listaEmp.setAttribute("hidden", "");
@@ -224,19 +276,8 @@ function botonVolver() {
   ocultarBuscar.removeAttribute("hidden");
 }
 
-function cargarCompanies(){
-const selectList =document.getElementById("companyId");
 
-arrComp.forEach(company=>{
-  const crearCompany = document.createElement("option");
-  crearCompany.textContent = company.name;
-  crearCompany.value =company.companyId;
 
-  selectList.appendChild(crearCompany);
-
-});
-
-}
 function crearEmployee() {
   document.getElementById("form").addEventListener("submit", function (event) {
     event.preventDefault();
@@ -290,9 +331,22 @@ function crearEmployee() {
   }
 
 
+  function cargarCompanies(){
+    const selectList =document.getElementById("companyId");
+    
+    arrComp.forEach(company=>{
+      const crearCompany = document.createElement("option");
+      crearCompany.textContent = company.name;
+      crearCompany.value =company.companyId;
+    
+      selectList.appendChild(crearCompany);
+    
+    });
+    }
+  
 function eliminarEmployee(employeeId) {
   // Envía la solicitud DELETE
-  const xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest(); 
   xhr.open("DELETE", url + `/Employee/${employeeId}`, true);
   xhr.setRequestHeader("Content-Type", "application/json");
 
@@ -316,8 +370,22 @@ function eliminarEmployee(employeeId) {
 
   xhr.send(); // No se necesita cuerpo para una solicitud DELETE
 }
- /*  
- 
+
+async function init() {
+  try{
+    await promiseGets();
+    renderizarEmployees();
+    cargarCompanies();
+  }
+  catch(e){
+    mostrarError("Error al obtener empleados o compañías");
+  }
+}
+
+window.onload = init; // INIT PARA QUE RENDERiCE LOS DATOS DE LA API NI BIEN SE RECARGA LA PAGINA
+
+
+/* 
  for(let i=0; i<1001;i++){
  
          eliminarEmployee(i); 
@@ -325,9 +393,9 @@ function eliminarEmployee(employeeId) {
 
  */
 
-     /*  
-
- for(let i=0; i<1000;i++){
+ /* 
+     
+ for(let i=0; i<10;i++){
 
      const employee = {
                 employeeId: 0,  // como se genera autoincremental y ese valor pisa lo que se le pase, con poner 0 para todos va bien
@@ -364,5 +432,5 @@ function eliminarEmployee(employeeId) {
     
             xhr.send(JSON.stringify(employee)); // Convierte el objeto a una cadena JSON
         }  
-         
-       */
+             
+   */
